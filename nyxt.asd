@@ -33,6 +33,9 @@
                cl-prevalence
                cl-qrencode
                cl-tld
+               cl-xmpp
+               cl-xmpp-tls
+               cl-xmpp-sasl
                closer-mop
                cl-containers
                dissect
@@ -205,6 +208,7 @@
                  (:file "repeat")
                  (:file "repl")
                  (:file "small-web")
+                 (:file "xmpp")
                  (:file "style" :depends-on ("bookmarklets"))
                  (:file "tts")
                  (:file "vi")
