@@ -87,7 +87,7 @@ define which elements are picked up by element hinting.")
 
 (define-parenscript hint-elements (nyxt-identifiers hints)
   (defun hint-create-element (original-element hint)
-    "Creates a DOM element to be used as a hint"
+    "Create a DOM element to be used as a hint."
     (ps:let* ((rect (ps:chain original-element (get-bounding-client-rect)))
               (element (ps:chain document (create-element "span"))))
       (setf (ps:@ element class-name) "nyxt-hint")
@@ -146,7 +146,7 @@ define which elements are picked up by element hinting.")
 
 (define-parenscript remove-hints ()
   (defun hints-remove-all ()
-    "Removes all the elements"
+    "Remove all the hinted elements."
     (ps:dolist (element (nyxt/ps:qsa document ":not(.nyxt-search-node) > .nyxt-hint"))
       (ps:chain element (remove))))
   (hints-remove-all))
