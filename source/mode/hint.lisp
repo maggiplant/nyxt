@@ -114,31 +114,31 @@ define which elements are picked up by element hinting.")
     ;; Returning fragment makes WebKit choke.
     nil))
 
-(-> select-from-alphabet (t fixnum string) (values string &optional))
-(defun select-from-alphabet (code char-length alphabet)
-  (let* ((exponents (nreverse (loop for pow below char-length
-                                    collect (expt (length alphabet) pow)))))
-    (coerce (loop for exp in exponents
-                  for quotinent = (floor (/ code exp))
-                  collect (aref alphabet quotinent)
-                  do (decf code (* quotinent exp)))
-            'string)))
-
-(-> generate-hints (integer) list-of-strings)
-(defun generate-hints (length)
-  (unless (zerop length)
-    (let* ((alphabet (hints-alphabet (find-submode 'hint-mode)))
-           (char-length (ceiling (log length (length alphabet)))))
-      (loop for i below length collect (select-from-alphabet i char-length alphabet)))))
+;; turn it into a generator
+;; https://dnaeon.github.io/generating-sequences-in-common-lisp/
+(-> generate-hints () list-of-strings)
+(defun generate-hints ()
+  ;; TODO describe the algorithm
+  ;; the key obs is computing all of the circular shift permutations on the 2nd
+  ;; position while maintaining the identity permutation on the 1st position
+  (let* ((hint-length 2)
+         (alphabet (hints-alphabet (find-submode 'hint-mode)))
+         (len (length alphabet)))
+    (loop for i from 0 below (expt len hint-length)
+          for hint = (make-string hint-length)
+          do (progn (setf (schar hint 0) (char alphabet (mod i len)))
+                    (setf (schar hint 1) (char alphabet (mod (+ (floor i len) i) len))))
+          collect hint)))
 
 (defun add-hints (&key selector)
   (let* ((dom (document-model (current-buffer)))
          (hintable-elements (clss:select selector dom))
-         (hints (generate-hints (length hintable-elements))))
+         (hints (generate-hints)))
     (run-thread "stylesheet adder"
       (add-stylesheet))
     (run-thread "element hint drawing"
       (hint-elements (map 'list #'get-nyxt-id hintable-elements) hints))
+    ;; TODO JS must return the element to feed plump
     (loop for elem across hintable-elements
           for hint in hints
           do (plump:set-attribute elem "nyxt-hint" hint)
