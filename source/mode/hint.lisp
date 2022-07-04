@@ -106,7 +106,7 @@ define which elements are picked up by element hinting.")
                                              (aref ids i)
                                              "\"]")))
             (hint (aref hints i)))
-        (when element
+        (when (nyxt/ps:element-in-view-port-p element)
           (ps:chain element (set-attribute "nyxt-hint" hint))
           (ps:let ((hint-element (hint-create-element element hint)))
             (ps:chain fragment (append-child hint-element))))))
