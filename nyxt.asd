@@ -421,6 +421,7 @@ This system does nothing in particular.")
                cl-ppcre)
   :pathname #p"NYXT:libraries;analysis;"
   :components ((:file "package")
+               (:file "composite-series")
                (:file "data")
                (:file "stem")
                (:file "tokenize")
