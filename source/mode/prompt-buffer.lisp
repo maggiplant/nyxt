@@ -129,7 +129,7 @@ default)."
        "C-b"           'select-previous-page
        "C-f"           'select-next-page
        "C-K"           'select-previous-source
-       "C-J"           'select-next-source))))
+       "C-J"           'select-next-source)))))
   (:toggler-command-p nil))
 
 (export-always 'define-command-prompt)
