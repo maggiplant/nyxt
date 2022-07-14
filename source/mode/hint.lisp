@@ -39,7 +39,7 @@ and to index the top of the page.")
 hints-selector syntax is that of CLSS, and broadly, that of CSS. Use it to
 define which elements are picked up by element hinting.")
    (keyscheme-map
-    (define-keyscheme-map "hint" ()
+    (define-keyscheme-map "hint-mode" ()
       keyscheme:cua
       (list
        "C-j"         'follow-hint
