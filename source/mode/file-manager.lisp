@@ -24,7 +24,8 @@
        "C-backspace" 'directory-up)
       keyscheme:emacs
       (list
-       "C-l" 'directory-up)))))
+       ;; FIXME why??
+       "C-l"         'directory-up)))))
 
 (export-always 'directory-elements)
 (defun directory-elements (directory)
