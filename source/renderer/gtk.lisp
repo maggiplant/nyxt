@@ -983,7 +983,8 @@ See `finalize-buffer'."
                                              :mime-type mime-type
                                              :known-type-p is-known-type
                                              :file-name file-name))))
-           (keymap (scheme-keymap (buffer request-data) (request-resource-scheme (buffer request-data))))
+           (keymap (keymap-from-keyscheme-map (buffer request-data)
+                                              (request-resource-keyscheme-map (buffer request-data))))
            (bound-function (the (or symbol keymaps:keymap null)
                                 (keymaps:lookup-key (keys request-data) keymap))))
       (cond
