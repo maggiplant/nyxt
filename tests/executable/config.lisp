@@ -4,8 +4,6 @@
 (in-package :nyxt/tests)
 (use-nyxt-package-nicknames)
 
-(plan nil)
-
 (defvar *executable* (asdf:system-relative-pathname :nyxt "nyxt"))
 (defvar *timeout* 10
   "Timeout in seconds.  See `exec-with-timeout'.")
@@ -54,33 +52,29 @@
            (log:error "~a" c)
            (nyxt:quit 17)))))))
 
-(subtest "Eval works"
-  (prove:is
-   (exec-with-timeout
-    `("--no-config"
-      "--eval" ,(write-to-string `(or
-                                   (eq *package* (find-package :nyxt-user))
-                                   (nyxt:quit 17)))
-      "--quit"))
-   0))
+(define-test eval-works ()
+  (assert-eq 0
+             (exec-with-timeout
+              `("--no-config"
+                "--eval" ,(write-to-string `(or
+                                             (eq *package* (find-package :nyxt-user))
+                                             (nyxt:quit 17)))
+                "--quit"))))
 
-(subtest "Config loads and browser starts"
-  (prove:is
-   (exec-with-config
-    `(defvar foo "foo variable")
-    (eval-on-startup
-     `(assert (string= foo "foo variable"))
-     `(nyxt:quit)))
-   0))
+(define-test config-loads-and-browser-starts ()
+  (assert-eq 0
+             (exec-with-config
+              `(defvar foo "foo variable")
+              (eval-on-startup
+               `(assert (string= foo "foo variable"))
+               `(nyxt:quit)))))
 
-(subtest "Config fails and browser restarts"
-  (prove:is
+(define-test config-fails-and-browser-restarts ()
+  (assert-eq
+   1
    (exec-with-config
     `(defmethod customize-instance ((buffer buffer) &key)
        (setf (auto-mode-rules-file buffer) (make-instance 'auto-mode-rules-file
                                                           :base-path "/path/to/auto/rules")))
     (eval-on-startup
-     `(nyxt:quit)))
-   1))
-
-(finalize)
+     `(nyxt:quit)))))
