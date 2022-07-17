@@ -47,8 +47,10 @@ default)."
        "M-return"      'return-selection-over-action
        "C-return"      'run-selection-action
        "tab"           'insert-selection
-       "C-c C-f"       'toggle-selection-actions-enabled ; TODO: This is the Emacs Helm binding.  Better?
-       "C-]"           'toggle-attributes-display ; TODO: This is the Emacs Helm binding.  Better?)
+       ; TODO: This is the Emacs Helm binding.  Better?
+       "C-c C-f"       'toggle-selection-actions-enabled
+       ; TODO: This is the Emacs Helm binding.  Better?
+       "C-]"           'toggle-attributes-display)
       keyscheme:cua
       (list
        "C-up"          'select-first
@@ -129,7 +131,7 @@ default)."
        "C-b"           'select-previous-page
        "C-f"           'select-next-page
        "C-K"           'select-previous-source
-       "C-J"           'select-next-source)))))
+       "C-J"           'select-next-source))))
   (:toggler-command-p nil))
 
 (export-always 'define-command-prompt)
